@@ -1,0 +1,27 @@
+{
+  "name": "ecommerce-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ch-Praneeth1/Ecommerce-BackEnd.git"
+  },
+  "author": "CH. Praneeth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ch-Praneeth1/Ecommerce-BackEnd/issues"
+  },
+  "homepage": "https://github.com/Ch-Praneeth1/Ecommerce-BackEnd#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.1.2",
+    "node": "^21.6.1",
+    "nodemon": "^3.0.3"
+  }
+}
