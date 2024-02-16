@@ -2,11 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { createProduct } = require('./controller/Product');
 const server = express();
-const productsRouters = require('./routes/Products')
-
+const productsRouter = require('./routes/Products')
+const categoriesRouter = require('./routes/Category')
+const brandsRouter = require('./routes/Brands')
 //middlewares
 server.use(express.json());//helps to parse req.body
-server.use('/products',productsRouters.router);
+server.use('/products',productsRouter.router);
+server.use('/categories',categoriesRouter.router);
+server.use('/brands',brandsRouter.router);
 
 
 main().catch(err => console.log(err));
