@@ -1,11 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const { createProduct } = require('./controller/Product');
 const server = express();
 const productsRouter = require('./routes/Products')
 const categoriesRouter = require('./routes/Category')
 const brandsRouter = require('./routes/Brands')
 //middlewares
+server.use(cors());
 server.use(express.json());//helps to parse req.body
 server.use('/products',productsRouter.router);
 server.use('/categories',categoriesRouter.router);

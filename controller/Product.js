@@ -11,7 +11,7 @@ exports.createProduct = (req,res) => {
             res.status(201).json(doc);
         }
     })
-}
+};
 
 exports.fetchAllProducts = async (req,res) => {
     // Here we need all query string
@@ -26,7 +26,7 @@ exports.fetchAllProducts = async (req,res) => {
     if(req.query.brand){
         query = query.find({brand: req.query.brand});
     }
-
+    //TODO: Need to get sort on discounted price not on actual price
     if(req.query._sort && req.query._order){
         query = query.sort({[req.query._sort]:req.query._order})         //{"title":"desc"}
     }
@@ -35,6 +35,26 @@ exports.fetchAllProducts = async (req,res) => {
     try{
         const doc = await query.exec();
         res.status(201).json(doc);
+    }catch (err) {
+        res.status(400).json(err);
+    }
+};
+
+exports.fetchProductById = async (req,res) => {
+    const {id} = req.params;
+    try{
+        const product = await Product.findById(id);
+        res.status(200).json(product);
+    }catch (err) {
+        res.status(400).json(err);
+    }
+};
+
+exports.updateProduct = async (req,res) => {
+    const {id} = req.params;
+    try{
+        const product = await Product.findByIdAndUpdate(id,req.body, {new:true});
+        res.status(200).json(product);
     }catch (err) {
         res.status(400).json(err);
     }
