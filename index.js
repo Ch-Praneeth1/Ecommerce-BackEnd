@@ -6,7 +6,7 @@ const server = express();
 const productsRouter = require('./routes/Product')
 const categoriesRouter = require('./routes/Category')
 const brandsRouter = require('./routes/Brands')
-const usersRouter = require('./routes/User');
+const usersRouter = require('./routes/Users');
 const authRouter = require('./routes/Auth');
 //middlewares
 server.use(cors());
