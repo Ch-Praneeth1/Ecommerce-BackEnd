@@ -7,6 +7,6 @@ const router = express.Router();
 // /auth is already added in the baes path 
 router.post('/signup',createUser)
         .post('/login',passport.authenticate('local'), loginUser)
-        .get('/check', checkUser)
+        .get('/check',passport.authenticate('jwt'), checkUser)
 
 exports.router = router;
