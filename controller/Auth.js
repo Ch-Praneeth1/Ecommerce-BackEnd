@@ -13,7 +13,7 @@ exports.createUser = async (req,res) => {
                 res.status(400).json(err);
             } else {
                 const token = jwt.sign({id:user.id, name:user.name, email:user.email, addresses:user.addresses, role:user.role}, SECRET_KEY);
-                res.cookie('jwt', token, { expires: new Date(Date.now() + 3600000), httpOnly: true }).status(201).json(token);
+                res.cookie('jwt', token, { expires: new Date(Date.now() + 3600000), httpOnly: true }).status(201).json({id:doc.id, role:doc.role});
             }
         })
         
@@ -26,12 +26,13 @@ exports.createUser = async (req,res) => {
 exports.loginUser = async (req,res) => {
     //DONE: We need a strong password authentication 
     res.cookie('jwt', req.user.token, { expires: new Date(Date.now() + 3600000), httpOnly: true }).status(201).json(req.user.token);
+    console.log(req.user.token)
 };
 
-exports.checkUser = async (req,res) => {
+exports.checkAuth = async (req,res) => {
     if(req.user){
         res.json(req.user);
     }else{
-        res.sendStatus(200);
+        res.sendStatus(401);
     }
 }

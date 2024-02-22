@@ -22,6 +22,7 @@ const ordersRouter = require('./routes/Orders');
 const { User } = require('./model/User');
 const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 const path = require('path');
+const { toASCII } = require('punycode');
 
 
 // JWT option 
@@ -65,7 +66,7 @@ passport.use('local', new LocalStrategy({usernameField
                     return done(null, false, {message: 'invalid credentials'});                
                 } else {
                     const token = jwt.sign(sanitizeUser(user), SECRET_KEY);
-                    done(null,{token});
+                    done(null,{id:user.id, role:user.role});
 
                 }
             })
@@ -103,6 +104,42 @@ passport.serializeUser(function(user, cb) {
       return cb(null, user);
     });
   });
+
+
+// Payments 
+
+// This is your test secret API key.
+const stripe = require("stripe")('sk_test_51OmaVLSID4lPrQkV1n1CPlA0eTxzu7TMMTCsF5V2eIejbTLSQzle3B2Ah52FSDPo6Au4m6vn8duPt7F5jvjQEIiB00H9TZe3bG');
+
+const calculateOrderAmount = (totalAmount) => {
+  // Replace this constant with a calculation of the order's amount
+  // Calculate the order total on the server to prevent
+  // people from directly manipulating the amount on the client
+  return totalAmount*100;   // must be sent in pisa
+};
+
+server.post("/create-payment-intent", async (req, res) => {
+  const { totalAmount } = req.body;
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(totalAmount),
+    currency: "inr",
+    // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+    automatic_payment_methods: {
+      enabled: true,
+    },
+   
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
+});
+
+
+
+
 
 main().catch(err => console.log(err));
 async function main() {
