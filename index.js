@@ -22,7 +22,6 @@ const ordersRouter = require('./routes/Orders');
 const { User } = require('./model/User');
 const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 const path = require('path');
-const { userInfo } = require('os');
 
 
 // JWT option 
@@ -65,8 +64,8 @@ passport.use('local', new LocalStrategy({usernameField
                 if (!crypto.timingSafeEqual(user.password, hashedPassword)){
                     return done(null, false, {message: 'invalid credentials'});                
                 } else {
-                    const token = jwt.sign(sanitizeUser(userInfo), SECRET_KEY);
-                    done(null,{id:user.id,role:user.role,token});
+                    const token = jwt.sign(sanitizeUser(user), SECRET_KEY);
+                    done(null,{token});
 
                 }
             })
@@ -77,10 +76,10 @@ passport.use('local', new LocalStrategy({usernameField
 ));
 
 passport.use('jwt', new JwtStrategy(opts, async function(jwt_payload, done) {
-  console.log(jwt_payload)
+ 
   try{
         const user = await User.findById(jwt_payload.id);
-        console.log(user)
+        
         if (user) {
             return done(null, sanitizeUser(user));
         } else {

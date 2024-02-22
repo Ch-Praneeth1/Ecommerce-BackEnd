@@ -5,11 +5,11 @@ exports.isAuth = (req,res,done) => {
 };
 
 exports.sanitizeUser = (user) => {
-  return {id:user.id, name:user.name, email:user.email, addresses:user.addresses, role:user.role};
+  return {id:user.id, role:user.role};
 }
 
 exports.cookieExtractor = function(req) {
-    let token = null;
+    var token = null;
     if(req && req.cookies){
        token = req.cookies['jwt'];
     }
