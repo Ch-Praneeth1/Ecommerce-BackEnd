@@ -25,8 +25,9 @@ exports.createUser = async (req,res) => {
 
 exports.loginUser = async (req,res) => {
     //DONE: We need a strong password authentication 
-    res.cookie('jwt', req.user.token, { expires: new Date(Date.now() + 3600000), httpOnly: true }).status(201).json(req.user.token);
-    console.log(req.user.token)
+    const user = req.user
+    res.cookie('jwt', user.token, { expires: new Date(Date.now() + 3600000), httpOnly: true }).status(201).json({id:user.id, role:user.role});
+    //console.log(req.user.token)
 };
 
 exports.checkAuth = async (req,res) => {
