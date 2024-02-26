@@ -7,6 +7,7 @@ const orderSchema = new Schema({
     totalItems: {type: Number},
     user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     //TODO we have to use enum types (limited option's)
+    paymentStatus:{type:String, default: 'pending'},
     paymentMethod: {type:String,  required:true},
     deliveryStatus: {type:String, default:"pending"},
     selectedAddress: {type:Schema.Types.Mixed, required:true}
